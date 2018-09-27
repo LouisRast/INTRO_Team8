@@ -61,7 +61,7 @@ int main(void)
 	  WAIT1_Waitms(100);
 	  LED1_PutVal(0);
 	  LED2_PutVal(1);
-	  WAIT1_Waitms(100);
+	  WAIT1_Waitms(1000);
   }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
