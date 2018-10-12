@@ -183,16 +183,7 @@ void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
-  for(;;) {
-
-	  LED1_On();
-	  LED2_On();
-	  WAIT1_Waitms(1000);
-	  LED1_Off();
-	  LED2_Off();
-	  WAIT1_Waitms(1000);
-
-  }
+  /*my robot user code*/
 }
 
 
