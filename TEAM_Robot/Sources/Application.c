@@ -190,6 +190,7 @@ void APP_Start(void) {
   /*my robot user code*/
   EVNT_SetEvent(EVNT_STARTUP);
   for(;;){
+	  KEY_Scan();
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
   }
 }
