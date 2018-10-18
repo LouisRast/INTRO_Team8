@@ -92,11 +92,13 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_LED_HEARTBEAT:
     LED2_Neg();
     break;
+
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
      break;
 #endif
+
     default:
       break;
    } /* switch */
@@ -182,8 +184,14 @@ static void APP_AdoptToHardware(void) {
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
+  EVNT_Init();
+  TU1_Init();
   __asm volatile("cpsie i"); /* enable interrupts */
   /*my robot user code*/
+  EVNT_SetEvent(EVNT_STARTUP);
+  for(;;){
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+  }
 }
 
 
