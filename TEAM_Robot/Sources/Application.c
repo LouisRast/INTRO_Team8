@@ -78,6 +78,7 @@ static void BtnMsg(int btn, const char *msg) {
 #endif
 }
 
+
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
   switch(event) {
@@ -183,18 +184,47 @@ static void APP_AdoptToHardware(void) {
 #endif
 }
 
+static void BlinkLED(void *p) {
+	LED1_Neg();
+	TRG_SetTrigger(TRG_BLINK, 1000/TRG_TICKS_MS, BlinkLED, NULL);
+}
+
+static void AppTask(void *pv) {
+	TickType_t last =xTaskGetTickCount();
+#if PL_CONFIG_HAS_BUZZER
+  BUZ_Beep(300, 1000);
+  //BUZ_PlayTune(BUZ_TUNE_WELCOME);
+#endif
+  TRG_SetTrigger(TRG_BLINK, 0, BlinkLED, NULL);
+  for(;;) {
+	  KEYDBNC_Process();
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+      //LED1_Neg();
+	  vTaskDelayUntil(&last, pdMS_TO_TICKS(100));
+  }
+}
+
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
   /*my robot user code*/
-
   EVNT_SetEvent(EVNT_STARTUP);
 
+    if (xTaskCreate(AppTask, "App", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
+      for(;;){} /* error case only, stay here! */
+    }
+    vTaskStartScheduler();
+    for(;;) {}
+
+  //EVNT_SetEvent(EVNT_STARTUP);
+
+  /*
   for(;;){
 	  KEYDBNC_Process();
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
   }
+  */
 }
 
 

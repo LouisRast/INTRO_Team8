@@ -10,6 +10,9 @@
 #include "FRTOS1.h"
 #include "Application.h"
 
+BaseType_t res;
+xTaskHandle taskHndl;
+
 void RTOS_Init(void) {
   /*! \todo Create tasks here */
 }
