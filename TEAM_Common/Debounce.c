@@ -36,7 +36,7 @@ void DBNC_Process(DBNC_FSMData *data) {
       case DBNC_KEY_IDLE: /* idle, and now getting a key */
         data->scanValue = data->getKeys();
         data->longKeyCnt = 1; /* zero is a special value */
-#if 1 /* \todo call event if you want to be notified here */
+#if 1 /* call event if you want to be notified here */
         data->onDebounceEvent(DBNC_EVENT_PRESSED, data->scanValue); /* we have a key press: call event handler  */
 #endif
         data->state = DBNC_KEY_PRESSED; /* advance to next state */
@@ -46,7 +46,7 @@ void DBNC_Process(DBNC_FSMData *data) {
       case DBNC_KEY_PRESSED:
         keys = data->getKeys();
         if (keys==data->scanValue) { /* still pressing the same keys */
-          /*! \todo See how it checks long or short press */
+          /*! See how it checks long or short press */
           if (data->longKeyCnt>=data->longKeyTicks) {
             /* yes, long key press detected */
             data->longKeyCnt=0; /* zero is a special value to prevent counting */
@@ -57,7 +57,7 @@ void DBNC_Process(DBNC_FSMData *data) {
           (void)TRG_SetTrigger(data->trigger, data->debounceTicks, (TRG_Callback)DBNC_Process, (void*)data); /* continue waiting */
           return;
         } else if (keys==0) { /* all keys are released */
-#if 0 /* \todo call event here if you want to be notified when button is released */
+#if 1 /* call event here if you want to be notified when button is released */
           if (data->longKeyCnt!=0) { /* zero means we already issued the long button press message */
             data->onDebounceEvent(DBNC_EVENT_PRESSED, data->scanValue); /* we have a key press: call event handler  */
           }
@@ -66,7 +66,8 @@ void DBNC_Process(DBNC_FSMData *data) {
           (void)TRG_SetTrigger(data->trigger, data->debounceTicks, (TRG_Callback)DBNC_Process, (void*)data);
           return;
         } else { /* we got another key set pressed */
-          /*! \todo Here it goes to the next state */
+          /*! Here it goes to the next state */
+          data->onDebounceEvent(DBNC_EVENT_RELEASED, data->scanValue^keys);
           data->state = DBNC_KEY_RELEASE;
         }
         break;

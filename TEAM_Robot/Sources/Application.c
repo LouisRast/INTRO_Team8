@@ -15,6 +15,7 @@
 #include "KeyDebounce.h"
 #include "CLS1.h"
 #include "KIN1.h"
+#include "Trigger.h"
 #if PL_CONFIG_HAS_KEYS
   #include "Keys.h"
 #endif
@@ -95,7 +96,8 @@ void APP_EventHandler(EVNT_Handle event) {
 
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
-    BtnMsg(1, "pressed");
+	  BUZ_Beep(500,1000);
+      BtnMsg(1, "pressed");
      break;
 #endif
 
@@ -184,13 +186,13 @@ static void APP_AdoptToHardware(void) {
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
-  EVNT_Init();
-  TU1_Init();
   __asm volatile("cpsie i"); /* enable interrupts */
   /*my robot user code*/
+
   EVNT_SetEvent(EVNT_STARTUP);
+
   for(;;){
-	  KEY_Scan();
+	  KEYDBNC_Process();
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
   }
 }
