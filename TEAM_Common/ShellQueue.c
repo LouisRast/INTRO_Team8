@@ -10,6 +10,7 @@
 #if PL_CONFIG_HAS_SHELL_QUEUE
 #include "ShellQueue.h"
 #include "FRTOS1.h"
+#include "UTIL1.h"
 
 static xQueueHandle SQUEUE_Queue;
 
@@ -84,6 +85,6 @@ void SQUEUE_Init(void) {
   if (SQUEUE_Queue==NULL) {
     for(;;){} /* out of memory? */
   }
-  vQueueAddToRegistry(SQUEUE_Queue, "ShellQueue");
+  vQueueAddToRegistry(SQUEUE_Queue, "ShellQueue"); /*to sue queue in debugger */
 }
 #endif /* PL_CONFIG_HAS_SHELL_QUEUE */

@@ -90,6 +90,7 @@ void APP_EventHandler(EVNT_Handle event) {
         WAIT1_Waitms(50);
       }
       LED1_Off();
+      SQUEUE_SendString("Robot is ready now...\r\n");
     }
   case EVNT_LED_HEARTBEAT:
     LED2_Neg();
