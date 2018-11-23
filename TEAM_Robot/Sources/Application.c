@@ -205,6 +205,18 @@ static void AppTask(void *pv) {
   }
 }
 
+static void ZorkTask(void *pv){
+	  zork_config(); /* initializes the game */
+	  run_zork_game(); /* run the game, does not return while it is running */
+}
+
+void startZorkTask(){
+	// 100 + min stack sizes
+    if (xTaskCreate(ZorkTask, "Zork", 900/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
+      for(;;){} /* error case only, stay here! */
+    }
+}
+
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
@@ -215,6 +227,7 @@ void APP_Start(void) {
     if (xTaskCreate(AppTask, "App", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
       for(;;){} /* error case only, stay here! */
     }
+
     vTaskStartScheduler();
     for(;;) {}
 
