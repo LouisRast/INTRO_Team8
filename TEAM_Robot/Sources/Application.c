@@ -196,7 +196,7 @@ static void AppTask(void *pv) {
   BUZ_Beep(300, 1000);
   //BUZ_PlayTune(BUZ_TUNE_WELCOME);
 #endif
-  TRG_SetTrigger(TRG_BLINK, 0, BlinkLED, NULL);
+  //TRG_SetTrigger(TRG_BLINK, 0, BlinkLED, NULL);
   for(;;) {
 	  KEYDBNC_Process();
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
