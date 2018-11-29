@@ -20,6 +20,9 @@
 #include "Sem.h"
 #include "LED.h"
 
+#include "Application.h"
+#include "Event.h"
+
 static xSemaphoreHandle sem = NULL;
 
 static void vSlaveTask(void *pvParameters) {
@@ -29,7 +32,8 @@ static void vSlaveTask(void *pvParameters) {
 		//If semaphore is not in possession,
 		//wait 10 ticks and then try to get the semaphore.
 		if(xSemaphoreTake(sem,10) == pdTRUE){
-			LED1_Neg();
+			//LED1_Neg();
+			EVNT_SetEvent(EVNT_LED_HEARTBEAT);
 		}
 	}
   }

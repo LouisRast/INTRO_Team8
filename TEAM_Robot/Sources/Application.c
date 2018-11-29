@@ -93,7 +93,7 @@ void APP_EventHandler(EVNT_Handle event) {
       SQUEUE_SendString("Robot is ready now...\r\n");
     }
   case EVNT_LED_HEARTBEAT:
-    LED2_Neg();
+    LED1_Neg();
     break;
 
 #if PL_CONFIG_NOF_KEYS>=1
@@ -185,7 +185,7 @@ static void APP_AdoptToHardware(void) {
 #endif
 }
 
-static void BlinkLED(void *p) {
+void BlinkLED(void *p) {
 	LED1_Neg();
 	TRG_SetTrigger(TRG_BLINK, 1000/TRG_TICKS_MS, BlinkLED, NULL);
 }
