@@ -15,9 +15,9 @@
 
 /* check local platform configuration */
 #if PL_LOCAL_CONFIG_BOARD_IS_ROBO
-  #define PL_CONFIG_BOARD_IS_FRDM     (1)
+  #define PL_CONFIG_BOARD_IS_FRDM     (0)
   #define PL_CONFIG_BOARD_IS_REMOTE   (0)
-  #define PL_CONFIG_BOARD_IS_ROBO     (0)
+  #define PL_CONFIG_BOARD_IS_ROBO     (1)
   #if defined(PEcfg_RoboV2)
     #define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
     #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
