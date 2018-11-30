@@ -35,6 +35,8 @@
 #define REF_MIN_NOISE_VAL     0x40   /* values below this are not added to the weighted sum */
 #define REF_USE_WHITE_LINE    0  /* if set to 1, then the robot is using a white (on black) line, otherwise a black (on white) line */
 
+#define REF_TIMER_TIMEOUT	60000 /*1ms timeout*/
+
 #define REF_START_STOP_CALIB      1 /* start/stop calibration commands */
 #if REF_START_STOP_CALIB
   static xSemaphoreHandle REF_StartStopSem = NULL;
@@ -136,11 +138,12 @@ void REF_CalibrateStartStop(void) {
  * \param raw Array to store the raw values.
  * \return ERR_OVERFLOW if there is a timeout, ERR_OK otherwise
  */
-static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
+static uint8_t REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
   uint8_t cnt; /* number of sensor */
   uint8_t i;
   RefCnt_TValueType timerVal;
   /*! \todo Consider reentrancy and mutual exclusion! */
+  uint8_t exitCode = ERR_OK;
 
   LED_IR_On(); /* IR LED's on */
   WAIT1_Waitus(200);
@@ -157,6 +160,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
   (void)RefCnt_ResetCounter(timerHandle); /* reset timer counter */
   do {
     timerVal = RefCnt_GetCounterValue(timerHandle);
+    if(timerVal<REF_TIMER_TIMEOUT){
     cnt = 0;
     for(i=0;i<REF_NOF_SENSORS;i++) {
       if (raw[i]==MAX_SENSOR_VALUE) { /* not measured yet? */
@@ -167,9 +171,14 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
         cnt++;
       }
     }
+    } else {
+    	exitCode = ERR_OVERFLOW;
+    	break;
+    }
   } while(cnt!=REF_NOF_SENSORS);
   taskEXIT_CRITICAL();
   LED_IR_Off(); /* IR LED's off */
+  return exitCode;
 }
 
 static void REF_CalibrateMinMax(SensorTimeType min[REF_NOF_SENSORS], SensorTimeType max[REF_NOF_SENSORS], SensorTimeType raw[REF_NOF_SENSORS]) {

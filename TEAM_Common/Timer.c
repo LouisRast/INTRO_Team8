@@ -25,7 +25,8 @@
 void TMR_OnInterrupt(void) {
   static unsigned int cntr = 0;
   /* this one gets called from an interrupt!!!! */
-  TRG_AddTick();
+  TRG_AddTick();		/*Increase ticks for trigger management*/
+  TMOUT1_AddTick(); 	/*Increase ticks for timeout management*/
 }
 
 void TMR_Init(void) {
