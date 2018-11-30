@@ -77,6 +77,8 @@ static void BtnMsg(int btn, const char *msg) {
 #endif
 }
 
+
+
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
   switch(event) {
@@ -182,8 +184,15 @@ static void APP_AdoptToHardware(void) {
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
+  EVNT_Init();
+  KEY_Init();
   __asm volatile("cpsie i"); /* enable interrupts */
   /*my freedom user code*/
+  EVNT_SetEvent(EVNT_STARTUP);
+    for(;;){
+    	//EVNT_HandleEvet(APP_EventHandler,TRUE);
+
+    }
 }
 
 

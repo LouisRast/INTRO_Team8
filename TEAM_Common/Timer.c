@@ -18,8 +18,8 @@
 #if PL_CONFIG_HAS_MOTOR_TACHO
   #include "Tacho.h"
 #endif
-#include "TMOUT1.h"
-#include "TmDt1.h"
+//#include "TMOUT1.h"
+//#include "TmDt1.h"
 
 
 void TMR_OnInterrupt(void) {

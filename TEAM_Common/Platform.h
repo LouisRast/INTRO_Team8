@@ -15,12 +15,12 @@
 
 /* check local platform configuration */
 #if PL_LOCAL_CONFIG_BOARD_IS_ROBO
-  #define PL_CONFIG_BOARD_IS_FRDM     (0)
+  #define PL_CONFIG_BOARD_IS_FRDM     (1)
   #define PL_CONFIG_BOARD_IS_REMOTE   (0)
-  #define PL_CONFIG_BOARD_IS_ROBO     (1)
+  #define PL_CONFIG_BOARD_IS_ROBO     (0)
   #if defined(PEcfg_RoboV2)
-    #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
-    #define PL_CONFIG_BOARD_IS_ROBO_V2  (1)
+    #define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
+    #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
   #else
     #define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
     #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
@@ -32,10 +32,10 @@
   #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
   #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
 #elif PL_LOCAL_CONFIG_BOARD_IS_REMOTE
-  #define PL_CONFIG_BOARD_IS_FRDM     (0)
-  #define PL_CONFIG_BOARD_IS_REMOTE   (1)
+  #define PL_CONFIG_BOARD_IS_FRDM     (1)
+  #define PL_CONFIG_BOARD_IS_REMOTE   (0)
   #define PL_CONFIG_BOARD_IS_ROBO     (0)
-  #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
+  #define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
   #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
 #else
   #error "One board type has to be defined in Platform_Local.h!"
